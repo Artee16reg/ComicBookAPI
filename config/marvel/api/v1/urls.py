@@ -12,4 +12,5 @@ app_name = 'v1'
 urlpatterns = [
     path('marvel/', comics_list_view),
     path('marvel/<int:pk>/', comic_detail_view),
+
 ]

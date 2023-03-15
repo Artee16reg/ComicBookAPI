@@ -2,6 +2,7 @@ import requests
 import hashlib
 import datetime
 
+
 timestamp = datetime.datetime.now().strftime('%Y-%m-%d%H:%M:%S')
 pub_key = '84ee796520f165c94489aceffd687bb1'
 priv_key = '16cc27910f450fa73a3b2b552c617f4bccc7710d'
@@ -31,12 +32,14 @@ def comics_list(request):
         params['titleStartsWith'] = request.GET.get('titleStartsWith')
     result = requests.get(f'https://gateway.marvel.com:443/v1/public/comics',
                           params=params)
+
     return result.json()
 
 
 def comic_detail(pk):
     """
-    получение название, описание, дата выхода, все связанные картинки, список персонажей в выпуске и stories)
+    парсер получение название, описание, дата выхода, все связанные картинки,
+    список персонажей в выпуске и stories
     """
 
     result = requests.get(f'https://gateway.marvel.com:443/v1/public/comics/{pk}',
@@ -44,10 +47,11 @@ def comic_detail(pk):
 
     comic_book_detail = {
         'title': result.json()['data']['results'][0]['title'],
-        'description': result.json()['data']['results'][0]['description'],
-        'modified': result.json()['data']['results'][0]['modified'],
-        'images': result.json()['data']['results'][0]['images'],
-        'stories': result.json()['data']['results'][0]['stories'],
+        # 'description': result.json()['data']['results'][0]['description'],
+        # 'modified': result.json()['data']['results'][0]['modified'],
+        # 'images': result.json()['data']['results'][0]['images'],
+        # 'characters': result.json()['data']['results'][0]['characters'],
+        # 'stories': result.json()['data']['results'][0]['stories'],
     }
 
     return comic_book_detail
