@@ -35,6 +35,19 @@ def comics_list(request):
 
 
 def comic_detail(pk):
+    """
+    получение название, описание, дата выхода, все связанные картинки, список персонажей в выпуске и stories)
+    """
+
     result = requests.get(f'https://gateway.marvel.com:443/v1/public/comics/{pk}',
                           params=params)
-    return result.json()
+
+    comic_book_detail = {
+        'title': result.json()['data']['results'][0]['title'],
+        'description': result.json()['data']['results'][0]['description'],
+        'modified': result.json()['data']['results'][0]['modified'],
+        'images': result.json()['data']['results'][0]['images'],
+        'stories': result.json()['data']['results'][0]['stories'],
+    }
+
+    return comic_book_detail
