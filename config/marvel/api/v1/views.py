@@ -1,5 +1,7 @@
 from rest_framework.decorators import api_view
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.response import Response
+
 from rest_framework.renderers import JSONRenderer
 
 from .marvel_data import comics_list, comic_detail
@@ -29,3 +31,21 @@ def comic_detail_view(request, pk):
         ComicBook.objects.create(title=comic_detail(pk).get('title'))
         ser = ComicBookSerializer()
         return Response(comics_list(request))
+
+
+class MasterListView(ListAPIView):
+    model = ComicBook
+    serializer_class = ComicBookSerializer
+    queryset = ComicBook.objects.all()
+
+
+class MasterViewDetail(RetrieveUpdateDestroyAPIView):
+    model = ComicBook
+    queryset = ComicBook.objects.all()
+    serializer_class = ComicBookSerializer
+
+
+class ComicsList(ListAPIView):
+    model = ComicBook
+    queryset = ComicBook.objects.filter(published=True)
+    serializer_class = ComicBookSerializer
