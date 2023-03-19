@@ -38,18 +38,23 @@ def comics_list(request):
 
 def comic_detail(pk):
     """
-    парсер получение название, описание, дата выхода, все связанные картинки,
+    Парсер получение название, описание, дата выхода, все связанные картинки,
     список персонажей в выпуске и stories
     """
 
     result = requests.get(f'https://gateway.marvel.com:443/v1/public/comics/{pk}',
                           params=params)
+    images_url = ''
+    if result.json()['data']['results'][0]['images']:
+        '''путь картинки'''
+        images_url = result.json()['data']['results'][0]['images'][0]['path']
+        images_url = images_url + '.' + result.json()['data']['results'][0]['images'][0]['extension']
 
     comic_book_detail = {
         'title': result.json()['data']['results'][0]['title'],
-        # 'description': result.json()['data']['results'][0]['description'],
-        # 'modified': result.json()['data']['results'][0]['modified'],
-        # 'images': result.json()['data']['results'][0]['images'],
+        'description': result.json()['data']['results'][0]['description'],
+        'modified': result.json()['data']['results'][0]['modified'],
+        'images': images_url,
         # 'characters': result.json()['data']['results'][0]['characters'],
         # 'stories': result.json()['data']['results'][0]['stories'],
     }
